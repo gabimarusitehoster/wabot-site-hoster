@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp Pairing</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; margin-top: 10px; }
+    #code { margin-top: 20px; font-weight: bold; color: green; }
+  </style>
+</head>
+<body>
+  <h2>Link WhatsApp</h2>
+  <input type="text" id="phone" placeholder="Enter phone (e.g. 23480xxxxxx)">
+  <input type="text" id="userId" placeholder="Enter your User ID (e.g. ryoku)">
+  <button onclick="pair()">Get Pairing Code</button>
+  <div id="code"></div>
+
+  <script>
+    async function pair() {
+      const phone = document.getElementById('phone').value;
+      const userId = document.getElementById('userId').value;
+      const res = await fetch(`/pair/${userId}/${phone}`, { method: 'POST' });
+      const data = await res.json();
+      if (data.pairingCode) {
+        document.getElementById('code').textContent = 'Pairing Code: ' + data.pairingCode;
+      } else {
+        document.getElementById('code').textContent = 'Error: ' + (data.message || data.error);
+      }
+    }
+  </script>
+</body>
+</html>
